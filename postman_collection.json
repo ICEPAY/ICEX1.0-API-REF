@@ -7,306 +7,448 @@
 	},
 	"item": [
 		{
-			"name": "Payments",
+			"name": "Connect",
 			"item": [
 				{
-					"name": "GetMyPaymentMethods",
-					"event": [
+					"name": "Payments",
+					"item": [
 						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
+							"name": "GetMyPaymentMethods",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Checksum",
+										"value": "{{checksum}}",
+										"type": "default"
+									},
+									{
+										"key": "MerchantID",
+										"value": "{{merchant_id}}",
+										"type": "default"
+									}
 								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Checksum",
-								"value": "{{checksum}}",
-								"type": "default"
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"Timestamp\" : \"{{timestamp}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/payment/getmypaymentmethods",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"payment",
+										"getmypaymentmethods"
+									]
+								}
 							},
-							{
-								"key": "MerchantID",
-								"value": "{{merchant_id}}",
-								"type": "default"
-							}
+							"response": []
+						},
+						{
+							"name": "Checkout",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"Timestamp\": \"{{timestamp}}\",\n  \"Amount\": 1000,\n  \"Country\": \"nl\",\n  \"Currency\": \"eur\",\n  \"Description\": \"\",\n  \"Issuer\": \"ABNAMRO\",\n  \"Language\": \"en\",\n  \"OrderID\": \"1\",\n  \"PaymentMethod\": \"IDEAL\",\n  \"Reference\": \"\",\n  \"URLCompleted\": \"\",\n  \"URLError\": \"\",\n  \"URLPostback\": [],\n  \"EndUserIP\": \"127.0.0.1\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/payment/checkout",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"payment",
+										"checkout"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetPayment",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"Timestamp\" : \"{{timestamp}}\",\n    \"PaymentID\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/payment/getpayment",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"payment",
+										"getpayment"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "CheckoutExtended",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"Timestamp\" : \"{{timestamp}}\",\n  \"Amount\": 1000,\n  \"Country\": \"nl\",\n  \"Currency\": \"eur\",\n  \"Description\": \"\",\n  \"Issuer\": \"AMEX\",\n  \"Language\": \"en\",\n  \"OrderID\": \"\",\n  \"PaymentMethod\": \"creditcard\",\n  \"Reference\": \"\",\n  \"URLCompleted\": \"\",\n  \"URLError\": \"\",\n  \"URLPostback\": [],\n  \"EndUserIP\": \"127.0.0.1\",\n  \"MerchantClientID\": \"123456\",\n  \"XML\": \"\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/payment/checkoutExtended",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"payment",
+										"checkoutExtended"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Forwarding Payments",
+					"item": [
+						{
+							"name": "Forward",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"Timestamp\" : \"{{timestamp}}\",\n  \"PaymentID\": 0,\n  \"ForwardToIBAN\": \"\",\n  \"ForwardToBIC\": \"\",\n  \"ForwardToBeneficiary\": \"\",\n  \"ForwardToMerchantID\": \"\",\n  \"Amount\": 1000,\n  \"Description\": \"\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/payment/forward",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"payment",
+										"forward"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Refunds",
+					"item": [
+						{
+							"name": "RequestRefund",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"Timestamp\" : \"{{timestamp}}\",\n  \"PaymentID\": 1,\n  \"RefundAmount\": 0,\n  \"RefundCurrency\": \"\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/refund/requestrefund",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"refund",
+										"requestrefund"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "CancelRefund",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"Timestamp\" : \"{{timestamp}}\",\n  \"RefundID\": 1,\n  \"PaymentID\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/refund/cancelrefund",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"refund",
+										"cancelrefund"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetPaymentRefunds",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"Timestamp\" : \"{{timestamp}}\",\n  \"PaymentID\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/refund/getpaymentrefunds",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"refund",
+										"getpaymentrefunds"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Recurring Payments",
+					"item": [
+						{
+							"name": "VaultCheckout",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"Timestamp\" : \"{{timestamp}}\",\n  \"Amount\": 1000,\n  \"Country\": \"nl\",\n  \"Currency\": \"eur\",\n  \"Description\": \"\",\n  \"Issuer\": \"AMEX\",\n  \"Language\": \"en\",\n  \"OrderID\": \"\",\n  \"PaymentMethod\": \"IDEAL\",\n  \"Reference\": \"\",\n  \"URLCompleted\": \"\",\n  \"URLError\": \"\",\n  \"URLPostback\": [],\n  \"EndUserIP\": \"127.0.0.1\",\n  \"MerchantClientID\": \"123456\",\n  \"ConsumerID\": \"\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/payment/vaultcheckout",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"payment",
+										"vaultcheckout"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "AutomaticCheckout",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"Timestamp\" : \"{{timestamp}}\",\n  \"Amount\": 1000,\n  \"Country\": \"nl\",\n  \"Currency\": \"eur\",\n  \"Description\": \"\",\n  \"Issuer\": \"AMEX\",\n  \"Language\": \"en\",\n  \"OrderID\": \"\",\n  \"PaymentMethod\": \"creditcard\",\n  \"Reference\": \"\",\n  \"URLCompleted\": \"\",\n  \"URLError\": \"\",\n  \"URLPostback\": [],\n  \"EndUserIP\": \"127.0.0.1\",\n  \"MerchantClientID\": \"123456\",\n  \"ConsumerID\": \"\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/payment/automaticCheckout",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"payment",
+										"automaticCheckout"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"let merchantId = pm.collectionVariables.get(\"merchant_id\");",
+							"",
+							"let payload = pm.variables.replaceIn(pm.request.url.toString()) +",
+							"        request.method +",
+							"        merchantId+",
+							"        pm.collectionVariables.get(\"merchant_secret\")+",
+							"        pm.variables.replaceIn(pm.request.body.raw);",
+							"let checksum = CryptoJS.SHA256(payload).toString(CryptoJS.enc.Hex);",
+							"",
+							"pm.request.headers.add({key: 'MerchantID', value:  Number.parseInt(merchantId) });",
+							"pm.request.headers.add({key: 'Checksum', value: checksum });",
+							"",
+							"console.log(pm.request.headers);"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Basicmode",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let fp = CryptoJS.SHA1(2).toString(CryptoJS.enc.Hex);",
+							"pm.request.url.query.upsert({key: 'ic_fp', value: fp});",
+							"",
+							"let query = pm.request.url.query;",
+							"let merchantID = pm.collectionVariables.get(\"merchant_id\");",
+							"let secret = pm.collectionVariables.get(\"merchant_secret\");",
+							"let amount = query.get('ic_amount');",
+							"let orderId = query.get('ic_orderid');",
+							"let reference = query.get('ic_reference');",
+							"let currency = query.get('ic_currency');",
+							"let country = query.get('ic_country');",
+							"",
+							"let checksum = CryptoJS.SHA1(`${merchantID}|${secret}|${amount}|${orderId}|${reference}|${currency}|${country}`).toString(CryptoJS.enc.Hex);",
+							"",
+							"pm.request.url.query.upsert({key: 'chk', value: checksum});",
+							"pm.request.url.query.upsert({key: 'ic_merchantid', value: merchantID});",
+							"",
+							"throw new Error(\"copy the string below into a browser:     \" +pm.request.url);"
 						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"Timestamp\" : \"{{timestamp}}\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{base_url}}/payment/getmypaymentmethods",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"payment",
-								"getmypaymentmethods"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Checkout",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"Timestamp\": \"{{timestamp}}\",\n  \"Amount\": 1000,\n  \"Country\": \"nl\",\n  \"Currency\": \"eur\",\n  \"Description\": \"\",\n  \"Issuer\": \"ABNAMRO\",\n  \"Language\": \"en\",\n  \"OrderID\": \"1\",\n  \"PaymentMethod\": \"IDEAL\",\n  \"Reference\": \"\",\n  \"URLCompleted\": \"\",\n  \"URLError\": \"\",\n  \"URLPostback\": [],\n  \"EndUserIP\": \"127.0.0.1\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{base_url}}/payment/checkout",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"payment",
-								"checkout"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "GetPayment",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"Timestamp\" : \"{{timestamp}}\",\n    \"PaymentID\": 1\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{base_url}}/payment/getpayment",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"payment",
-								"getpayment"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "CheckoutExtended",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"Timestamp\" : \"{{timestamp}}\",\n  \"Amount\": 1000,\n  \"Country\": \"nl\",\n  \"Currency\": \"eur\",\n  \"Description\": \"\",\n  \"Issuer\": \"AMEX\",\n  \"Language\": \"en\",\n  \"OrderID\": \"\",\n  \"PaymentMethod\": \"creditcard\",\n  \"Reference\": \"\",\n  \"URLCompleted\": \"\",\n  \"URLError\": \"\",\n  \"URLPostback\": [],\n  \"EndUserIP\": \"127.0.0.1\",\n  \"MerchantClientID\": \"123456\",\n  \"XML\": \"\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{base_url}}/payment/checkoutExtended",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"payment",
-								"checkoutExtended"
-							]
-						}
-					},
-					"response": []
+						"type": "text/javascript"
+					}
 				}
-			]
-		},
-		{
-			"name": "Recurring Payments",
-			"item": [
-				{
-					"name": "VaultCheckout",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"Timestamp\" : \"{{timestamp}}\",\n  \"Amount\": 1000,\n  \"Country\": \"nl\",\n  \"Currency\": \"eur\",\n  \"Description\": \"\",\n  \"Issuer\": \"AMEX\",\n  \"Language\": \"en\",\n  \"OrderID\": \"\",\n  \"PaymentMethod\": \"IDEAL\",\n  \"Reference\": \"\",\n  \"URLCompleted\": \"\",\n  \"URLError\": \"\",\n  \"URLPostback\": [],\n  \"EndUserIP\": \"127.0.0.1\",\n  \"MerchantClientID\": \"123456\",\n  \"ConsumerID\": \"\"\n}"
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://pay.icepay.eu/basic/?ic_merchantid={{merchant_id}}&ic_description=02-test-trx-icepay&ic_reference=02-test-trx-icepay&ic_orderid=02-test-trx&ic_amount=1&ic_currency=EUR&ic_language=NL&ic_paymentmethod=CREDITCARD&ic_issuer=MASTER&ic_country=NL&chk&ic_fp",
+					"protocol": "https",
+					"host": [
+						"pay",
+						"icepay",
+						"eu"
+					],
+					"path": [
+						"basic",
+						""
+					],
+					"query": [
+						{
+							"key": "ic_merchantid",
+							"value": "{{merchant_id}}"
 						},
-						"url": {
-							"raw": "{{base_url}}/payment/vaultcheckout",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"payment",
-								"vaultcheckout"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "AutomaticCheckout",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"Timestamp\" : \"{{timestamp}}\",\n  \"Amount\": 1000,\n  \"Country\": \"nl\",\n  \"Currency\": \"eur\",\n  \"Description\": \"\",\n  \"Issuer\": \"AMEX\",\n  \"Language\": \"en\",\n  \"OrderID\": \"\",\n  \"PaymentMethod\": \"creditcard\",\n  \"Reference\": \"\",\n  \"URLCompleted\": \"\",\n  \"URLError\": \"\",\n  \"URLPostback\": [],\n  \"EndUserIP\": \"127.0.0.1\",\n  \"MerchantClientID\": \"123456\",\n  \"ConsumerID\": \"\"\n}"
+						{
+							"key": "ic_version",
+							"value": "2",
+							"description": "Default version, leave off",
+							"disabled": true
 						},
-						"url": {
-							"raw": "{{base_url}}/payment/automaticCheckout",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"payment",
-								"automaticCheckout"
-							]
+						{
+							"key": "ic_description",
+							"value": "02-test-trx-icepay"
+						},
+						{
+							"key": "ic_reference",
+							"value": "02-test-trx-icepay"
+						},
+						{
+							"key": "ic_orderid",
+							"value": "02-test-trx"
+						},
+						{
+							"key": "ic_amount",
+							"value": "1"
+						},
+						{
+							"key": "ic_currency",
+							"value": "EUR"
+						},
+						{
+							"key": "ic_language",
+							"value": "NL"
+						},
+						{
+							"key": "ic_paymentmethod",
+							"value": "CREDITCARD"
+						},
+						{
+							"key": "ic_issuer",
+							"value": "MASTER"
+						},
+						{
+							"key": "ic_country",
+							"value": "NL"
+						},
+						{
+							"key": "chk",
+							"value": null
+						},
+						{
+							"key": "ic_fp",
+							"value": null
 						}
-					},
-					"response": []
+					]
 				}
-			]
-		},
-		{
-			"name": "Refunds",
-			"item": [
-				{
-					"name": "RequestRefund",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"Timestamp\" : \"{{timestamp}}\",\n  \"PaymentID\": 1,\n  \"RefundAmount\": 0,\n  \"RefundCurrency\": \"\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{base_url}}/refund/requestrefund",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"refund",
-								"requestrefund"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "CancelRefund",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"Timestamp\" : \"{{timestamp}}\",\n  \"RefundID\": 1,\n  \"PaymentID\": 1\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{base_url}}/refund/cancelrefund",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"refund",
-								"cancelrefund"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "GetPaymentRefunds",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"Timestamp\" : \"{{timestamp}}\",\n  \"PaymentID\": 1\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{base_url}}/refund/getpaymentrefunds",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"refund",
-								"getpaymentrefunds"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Forwarding Payments",
-			"item": [
-				{
-					"name": "Forward",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"Timestamp\" : \"{{timestamp}}\",\n  \"PaymentID\": 0,\n  \"ForwardToIBAN\": \"\",\n  \"ForwardToBIC\": \"\",\n  \"ForwardToBeneficiary\": \"\",\n  \"ForwardToMerchantID\": \"\",\n  \"Amount\": 1000,\n  \"Description\": \"\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{base_url}}/payment/forward",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"payment",
-								"forward"
-							]
-						}
-					},
-					"response": []
-				}
-			]
+			},
+			"response": []
 		}
 	],
 	"event": [
@@ -316,21 +458,7 @@
 				"type": "text/javascript",
 				"exec": [
 					"let timestamp = new Date().toISOString();",
-					"pm.collectionVariables.set(\"timestamp\", timestamp);",
-					"",
-					"let merchantId = pm.collectionVariables.get(\"merchant_id\");",
-					"",
-					"let payload = pm.variables.replaceIn(pm.request.url.toString()) +",
-					"        request.method +",
-					"        merchantId+",
-					"        pm.collectionVariables.get(\"merchant_secret\")+",
-					"        pm.variables.replaceIn(pm.request.body.raw);",
-					"let checksum = CryptoJS.SHA256(payload).toString(CryptoJS.enc.Hex);",
-					"",
-					"pm.request.headers.add({key: 'MerchantID', value:  Number.parseInt(merchantId) });",
-					"pm.request.headers.add({key: 'Checksum', value: checksum });",
-					"",
-					"console.log(pm.request.headers);"
+					"pm.collectionVariables.set(\"timestamp\", timestamp);"
 				]
 			}
 		},
